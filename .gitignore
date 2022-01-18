@@ -1,3 +1,6 @@
 /build
 /dist
 /__pycache__
+/generateapp/__pycache__
+/survivalmodel/__pycache__
+/generateapp/generate/__pycache__
