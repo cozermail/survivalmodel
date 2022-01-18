@@ -1,0 +1,627 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Diabetic Nephropathy</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" >
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/plotly-2.2.0.min.js' %}"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .title {
+            position: relative;
+            height: 12vh;
+            background: url('{% static "img/title.png" %}');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .title h1 {
+            width: 100%;
+            line-height: 12vh;
+            text-align: center;
+            font-family: -webkit-pictograph;
+            color: #FFFFFF;
+            font-size: 1.8vw;
+            letter-spacing: 1px;
+        }
+        .title .english {
+            letter-spacing: 0px;
+        }
+
+        .title #language {
+            position: absolute;
+            top: 38%;
+            right: 5%;
+            transform: translateX(-50%);
+            width: 2%;
+        }
+
+        .title img {
+            width: 100%;
+        }
+
+        .content {
+            margin: 4vh auto;
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .left {
+            width: 36%;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .left img {
+            width: 100%;
+        }
+
+        .left .text {
+            margin-top: 2vh;
+            font-family: -webkit-pictograph;
+            font-family: -ios-pictograph;
+            font-weight: 400;
+            color: #666666;
+            font-size: 1.2vw;
+        }
+
+        .right {
+            width: 48%;
+            height: 100%;
+            overflow-y: auto;
+            background: rgba(1, 92, 149, 0.09);
+            border-radius: 12px;
+        }
+
+        .right .hint {
+            font-size: 0.7vw;
+            font-family: Roboto-Regular, Roboto;
+            font-weight: 400;
+            color: #666666;
+        }
+
+        /*Form Styles*/
+        form {
+            margin: 2vw auto;
+            width: 83%;
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5vw;
+            font-size: 1vw;
+            width: 110%;
+        }
+
+        .label-normal {
+            font-weight: normal;
+        }
+
+        .description-date {
+            color: #808080;
+            font-size: 0.8em;
+            font-weight: normal;
+        }
+
+        .supports-date .description-date {
+            display: none;
+        }
+
+        input,
+        select {
+            display: inline-block;
+            font-size: 0.9vw;
+            margin-bottom: 1.5vw;
+            padding: 1vw 0.8vw;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 8px;
+            color: #333333;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        input:-internal-autofill-selected {
+            background-color: #fff !important;
+        }
+
+
+        .flex-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .flex-box>div {
+            width: 48%;
+        }
+
+        .input {
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 1.5vw;
+        }
+
+        .input input {
+            margin-bottom: 0;
+            max-width: 60%;
+        }
+
+        .input span {
+            font-size: 0.8vw;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #BCBCBC;
+        }
+
+        input:-moz-placeholder {
+            color: #BCBCBC;
+        }
+
+        input:-ms-input-placeholder {
+            color: #BCBCBC;
+        }
+
+        [type="checkbox"],
+        [type="radio"] {
+            margin-bottom: 0.5vw;
+            width: auto;
+        }
+
+        .button {
+            background-color: #015C95;
+            border: 1px solid #015C95;
+            border-radius: 1px;
+            color: #ffffff;
+            display: inline-block;
+            font-weight: normal;
+            line-height: 1.2;
+            padding: 1vw 0.8vw;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        input.button {
+            margin-bottom: 0;
+        }
+
+        .button:active,
+        .button:focus,
+        .button:hover {
+            background-color: #015C95;
+            border-color: #015C95;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .button:active {
+            box-shadow: inset 0 0.15625em 0.25em rgba(0, 0, 0, 0.15), 0 1px 0.15625em rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                -webkit-text-size-adjust: 100% !important;
+                text-size-adjust: 100% !important;
+                -moz-text-size-adjust: 100% !important;
+            }
+
+            .content {
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+            }
+            .title {
+                width: 100%;
+            }
+            .title h1 {
+                font-size: 14px;
+                font-family: -ios-pictograph;
+            }
+
+            .title .english {
+                width: 78%;
+                text-align: center;
+                line-height: 1;
+                margin: 0 auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .title #language {
+                right: 1%;
+                width: 4%
+            }
+
+            .left {
+                width: 90%;
+            }
+
+            input,
+            select {
+                padding: 10px 8px;
+                font-size: 12px;
+                -webkit-appearance: none;
+                background-color: #fff;
+                border-radius: 8px;
+            }
+
+            .left .text {
+                font-size: 14px;
+                font-family: -ios-pictograph;
+            }
+
+            .input span {
+                font-size: 12px;
+            }
+
+            label {
+                font-size: 12px;
+                margin-bottom: 2vw
+            }
+
+            .right {
+                width: 90%;
+                margin-top: 5%;
+            }
+
+            .right .hint {
+                font-size: 12px;
+            }
+
+            .right form {
+                margin-bottom: 2%;
+            }
+
+            .button {
+                margin-top: 10px;
+                padding: 10px 8px;
+            }
+
+            input[type="button"],
+            input[type="submit"],
+            input[type="reset"],
+            botton,
+            bottom {
+                -webkit-appearance: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        <h1 class="english">A Calculation Tool Predict Cardiovascular Disease Risk in Diabetic Kidney Disease Patients</h1>
+        <h1>糖尿病肾病患者心脑血管疾病发病风险评估</h1>
+        <img src="{% static 'img/icon_zy@2x(1).png' %}" alt="" id="language">
+    </div>
+    <div class="content">
+        <div class="left">
+            <img src="{% static 'img/img.png' %}" alt="">
+            <div class="text">
+                This calculation tool is designed to calculate the risk
+                of developing a future cardiovascular disease. It is
+                only valid for diabetic kidney disease patients without
+                the history of cardiovascular disease.
+            </div>
+            <div class="text">
+                Cardiovascular disease including coronary heart
+                disease, congestive heart failure, cerebrovascular
+                disease (subarachnoid haemorrhage is not included)
+                and peripheral artery disease.
+            </div>
+        </div>
+        <div class="left">
+            <img src="{% static 'img/img.png' %}" alt="">
+            <div class="text">
+                该计算工具用于预测患者发生心血管疾病的危险分数。仅适用于无心血管病史的糖尿病肾病患者。
+            </div>
+            <div class="text">
+                心血管疾病包括冠心病、心力衰竭、脑血管疾病（不包括蛛网膜下腔出血）和外周动脉疾病。
+            </div>
+        </div>
+        <div class="right">
+            <form class="validate" id="myForm1" action="result/" method="post" target="_blank">
+                <div class="hint">Enter the information below with your most recent values, then click Calculate. </div>
+                <div>
+                    <label for="smokingStatus">Smoking status</label>
+                    <select id="smokingStatus" name="smokingStatus" aria-placeholder="Please select" style="width: 100%;">
+                        <option value="0">No smoking</option>
+                        <option value="-1">Used to smoke</option>
+                        <option value="-2">Smoking</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Age</label>
+                    <input type="text" id="Age" name="Age"
+                        onblur="verifyValue(value,'Age','Please input the value between 18 and 90.',18,90)"
+                        onkeyup="value=value.replace(/(?![\d])./g,'')" placeholder="Please enter" style="width: 100%;"
+                        autocomplete="off">
+                </div>
+                <div class="flex-box">
+                    <div>
+                        <label for="SBP">Systolic pressure</label>
+                        <div class="input">
+                            <input type="text" id="SBP" name="SBP"
+                                onblur="verifyValue(value,'SBP','Please input the value between 70 and 250.',70,250)"
+                                onkeyup="value=value.replace(/(?![\d])./g, '')"
+                                placeholder="Please enter"  autocomplete="off">
+                            <span>mmHg</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="TC">Total cholesterol</label>
+                        <div class="input">
+                            <input type="text" id="TC" name="TC"
+                                onblur="verifyValue(value,'TC','Please input the value between 1 and 15.',1,15)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
+                                placeholder="Please enter" autocomplete="off">
+                            <span>mmol/L</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-box">
+                    <div>
+                        <label for="Hb">Hemoglobin</label>
+                        <div class="input">
+                            <input type="text" id="Hb" name="Hb"
+                                onblur="verifyValue(value,'Hb','Please input the value between 50 and 180.',50,180)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
+                                placeholder="Please enter" autocomplete="off">
+                            <span>g/L</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="HDL">High density liptein</label>
+                        <div class="input">
+                            <input type="text" id="HDL" name="HDL"
+                                onblur="verifyValue(value,'HDL','Please input the value between 0 and 5.',0,5)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '$1')"
+                                placeholder="Please enter" autocomplete="off">
+                            <span>mmol/L</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="_24HourUrinaryProtein">24-hour urinary protein excretion</label>
+                    <div class="input">
+                        <input type="text" id="_24HourUrinaryProtein" name="_24HourUrinaryProtein"
+                            onblur="verifyValue(value,'_24HourUrinaryProtein','Please input the value between 0 and 30.',0,30)"
+                            onkeyup="value=value.replace(/(?![\d]|[.])./g, '$1')"
+                            placeholder="Please enter" style="width: 30%;" autocomplete="off">
+                        <span>g</span>
+                    </div>
+                </div>
+                <input type="submit" class="button" value="Calculate" id="submit">
+            </form>
+            <form class="validate" id="myForm0" action="result/" method="post" target="_blank">
+                <div class="hint">请在下方输入最新的个人信息，然后点击计算。</div>
+                <div>
+                    <label for="smokingStatus">吸烟</label>
+                    <select id="smokingStatus" name="smokingStatus" aria-placeholder="Please select" style="width: 100%;">
+                        <option value="0">不吸烟</option>
+                        <option value="-1">已戒烟</option>
+                        <option value="-2">吸烟</option>
+                    </select>
+                </div>
+                <div>
+                    <label>年龄</label>
+                    <input type="text" id="Age" name="Age" 
+                    onblur="verifyValue(value,'Age','请输入 18 - 90 之间的任意数值。',18,90)"
+                     onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入"
+                        style="width: 100%;" autocomplete="off">
+                </div>
+                <div class="flex-box">
+                    <div>
+                        <label for="SBP">收缩压</label>
+                        <div class="input">
+                            <input type="text" id="SBP" name="SBP" onblur="verifyValue(value,'SBP','请输入 70 - 250 之间的任意数值。',70,250)"
+                                onkeyup="value=value.replace(/(?![\d])./g, '')"
+                                placeholder="请输入"  autocomplete="off">
+                            <span>mmHg</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="TC">总胆固醇</label>
+                        <div class="input">
+                            <input type="text" id="TC" name="TC"
+                                onblur="verifyValue(value,'TC','请输入 1 - 15 之间的任意数值。',1,15)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
+                                placeholder="请输入" autocomplete="off">
+                            <span>mmol/L</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-box">
+                    <div>
+                        <label for="Hb">血红蛋白</label>
+                        <div class="input">
+                            <input type="text" id="Hb" name="Hb"
+                            onblur="verifyValue(value,'Hb','请输入 50 - 180 之间的任意数值。',50,180)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
+                                placeholder="请输入" autocomplete="off">
+                            <span>g/L</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="HDL">高密度脂蛋白</label>
+                        <div class="input">
+                            <input type="text" id="HDL" name="HDL"
+                             onblur="verifyValue(value,'HDL','请输入 0 - 5 之间的任意数值。',0,5)"
+                                onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
+                                placeholder="请输入" autocomplete="off">
+                            <span>mmol/L</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="_24HourUrinaryProtein">24小时尿蛋白定量</label>
+                    <div class="input">
+                        <input type="text" id="_24HourUrinaryProtein" name="_24HourUrinaryProtein" 
+                        onblur="verifyValue(value,'_24HourUrinaryProtein','请输入0-30之间的任意数值。',0,30)"
+                            onkeyup="value=value.replace(/(?![\d]|[.])./g, '')" placeholder="请输入"
+                            style="width: 30%;" autocomplete="off">
+                        <span>g</span>
+                    </div>
+                </div>
+                <input type="submit" class="button" value="计算" id="submit">
+            </form>
+        </div>
+    </div>
+    <script>
+        //中英文切换
+        var language = 1
+        $('.title h1').eq(language).hide()
+        $('.content .left').eq(language).hide()
+        $('.content .right .validate').eq(language).hide()
+
+        $('#language').click(function () {
+            language = language == 1 ? 0 : 1
+            $('.title h1').show().eq(language).hide()
+            $('.content .left').show().eq(language).hide()
+            $('.content .right .validate').show().eq(language).hide()
+        })
+
+        //获取文本宽度
+        var textWidth = function (text) {
+            var sensor = $('<pre>' + text + '</pre>').css({
+                display: 'none'
+            });
+            $('body').append(sensor);
+            var width = sensor.width();
+            sensor.remove();
+            return width;
+        };
+
+        //输入值验证
+        function verifyValue(value, id, text, min, max) {
+            const formId = 'myForm' + language
+            if (value) {
+                if (value < min || value > max) {
+                    const element = $('#' + `${formId}` + ' #' + `${id}`)
+                    element.val('')
+                    element.focus()
+                    alert(text)
+                }
+            }
+        }
+
+        // Check all fields on submit
+        document.addEventListener('submit', function (event) {
+            // event.preventDefault()
+            const formId = 'myForm' + language
+
+            const form = {}
+            form.smokingStatus = $('#' + `${formId}` + ' #smokingStatus').val()
+            form.Age = $('#' + `${formId}` + ' #Age').val()
+            form.SBP = $('#' + `${formId}` + ' #SBP').val()
+            form.TC = $('#' + `${formId}` + ' #TC').val()
+            form.Hb = $('#' + `${formId}` + ' #Hb').val()
+            form.HDL = $('#' + `${formId}` + ' #HDL').val()
+            form._24HourUrinaryProtein = $('#' + `${formId}` + ' #_24HourUrinaryProtein').val()
+
+            const defObj = {
+                smokingStatus: 0,
+                Age: 52,
+                SBP: 135,
+                TC: 4.49,
+                Hb: 111,
+                HDL: 1.08,
+                _24HourUrinaryProtein: 2.99,
+            }
+
+            let isNull = false
+            for (var i in form) {
+                if (!form[i]) {
+                    isNull = true
+                    break
+                }
+            }
+            if (isNull) {
+                if (language == 0) {
+                    let r = confirm('输入指标中有缺失值，请检查您的输入值。缺失值将使用默认值进行填充，输出的结果可能会受到影响！')
+                    let a = -2
+                    if (r) {
+                        for (var i in form) {
+                            ++a
+                            if (!form[i]) {
+                                $('#' + `${formId}` + ' input').eq(a).val(`${defObj[i]}`)
+                                form[i] = defObj[i]
+                            }
+                        }
+                    } else {
+                        event.preventDefault()
+                    }
+                } else {
+                    let r = confirm(
+                        'One or more values are missing. Please check your input values first. The missing values will be filled in with default values. The returned outcome may be influenced!'
+                    )
+                    let a = -2
+                    if (r) {
+                        for (var i in form) {
+                            ++a
+                            if (!form[i]) {
+                                $('#' + `${formId}` + ' input').eq(a).val(`${defObj[i]}`)
+                                form[i] = defObj[i]
+                            }
+                        }
+                    } else {
+                        event.preventDefault()
+                    }
+                }
+
+            }
+        }, false);
+
+        // Check all fields on submit
+        // document.addEventListener('submit', function (event) {
+            // Only run on forms flagged for validation
+            // if (!event.target.classList.contains('validate')) return;
+            // event.preventDefault()
+            // let dataForm = $("#dataForm").serializeArray()
+            // let params = {}
+            // dataForm.forEach(data => {
+            //     params[data.name] = data.value
+            // })
+            // $.ajax({
+            //     url: '/ajax/',
+            //     type: 'POST',
+            //     data: params,
+            //     success: function(res) {
+            //         console.log(res)
+            //         let dataArr = JSON.parse(res.data)
+            //         Plotly.newPlot('div1', [{
+            //             x: Object.keys(dataArr),
+            //             y: Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]}),
+            //             type: 'scatter'
+            //             }]
+            //         )
+            //     }
+            // })
+        // }, false);
+        
+        
+    </script>
+</body>
+
+</html>

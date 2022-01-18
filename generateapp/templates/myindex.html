@@ -1,0 +1,76 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>预测模型参数</title>
+    <link rel="shortcut icon" href="#">
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/plotly-2.2.0.min.js' %}"></script>
+    <style>
+        .divv {
+            width: 800px;
+            height: 800px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form name="dataForm" id="dataForm">
+        <div>
+            <input type="text" name="smokingStatus" placeholder="Smoking Status" />
+        </div>
+        <div>
+            <input type="text" name="Age" placeholder="Age" />
+        </div>
+        <div>
+            <input type="text" name="SBP" placeholder="SBP" />
+        </div>
+        <div>
+            <input type="text" name="TC" placeholder="TC" />
+        </div>
+        <div>
+            <input type="text" name="Hb" placeholder="Hb" />
+        </div>
+        <div>
+            <input type="text" name="HDL" placeholder="HDL" />
+        </div>
+        <div>
+            <input type="text" name="_24HourUrinaryProtein" placeholder="24-hour urinary protein" />
+        </div>
+    </form>
+    <div>
+        <button name="btn1" onclick="submitData()">提交了吧</button>
+    </div>
+
+    <div id="div1" class="divv"></div>
+
+    <script>
+        function submitData() {
+            let dataForm = $("#dataForm").serializeArray()
+            let params = {}
+            dataForm.forEach(data => {
+                params[data.name] = data.value
+            })
+            $.ajax({
+                url: '/ajax/',
+                type: 'POST',
+                data: params,
+                success: function(res) {
+                    let dataArr = JSON.parse(res.data)
+                    Plotly.newPlot('div1', [{
+                        x: Object.keys(dataArr),
+                        y: Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]}),
+                        type: 'scatter'
+                        }]
+                    )
+                }
+            })
+        }
+
+
+    </script>
+</body>
+
+</html>

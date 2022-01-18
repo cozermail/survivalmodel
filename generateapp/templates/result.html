@@ -1,0 +1,315 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" >
+    <title>Diabetic Nephropathy</title>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/plotly-2.2.0.min.js' %}"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .title {
+            position: relative;
+            height: 12vh;
+            background: url('{% static "img/title.png" %}');
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .title h1 {
+            width: 100%;
+            line-height: 12vh;
+            text-align: center;
+            font-family: -webkit-pictograph;
+            color: #FFFFFF;
+            font-size: 1.8vw;
+            letter-spacing: 1px;
+        }
+        .title .english {
+            letter-spacing: 0px;
+        }
+        .title #language {
+            position: absolute;
+            top: 38%;
+            right: 5%;
+            transform: translateX(-50%);
+            width: 2%;
+            cursor: pointer;
+        }
+
+        .title img {
+            width: 100%;
+        }
+
+        .content {
+            margin: 4vh auto;
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .left {
+            width: 36%;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .left img {
+            width: 100%;
+        }
+
+        .left .text {
+            margin-top: 2vh;
+            font-family: -webkit-pictograph;
+            font-weight: 400;
+            color: #666666;
+            font-size: 1.2vw;
+        }
+
+        .left .radio {
+            margin: 2vh 0;
+            font-weight: bold;
+            color: #111111;
+            font-size: 1vw;
+        }
+        .left .radio .radio-label {
+            margin-right: 25%;
+            margin-left: 25%;
+        }
+
+        .left .risk {
+            font-size: 1vw;
+        }
+
+        .left .label {
+            width: 15%;
+            font-family: Roboto-Bold, Roboto;
+            font-weight: bold;
+            color: #333333;
+            font-size: 1.2vw;
+            position: absolute;
+        }
+
+        .left .radio input {
+            margin-right: 5px;
+        }
+
+        .right {
+            width: 45%;
+            height: 100%;
+            overflow-y: auto;
+            background: rgba(1, 92, 149, 0.09);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .img {
+            width: 86%;
+            height: 70%;
+            background: #FFFFFF;
+            margin: 40px auto;
+        }
+
+        button {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #015C95;
+            border: 1px solid #015C95;
+            border-radius: 1px;
+            color: #ffffff;
+            font-weight: normal;
+            line-height: 1.2;
+            padding: 1vw 0.8vw;
+            border-radius: 8px;
+        }
+        @media (max-width: 768px){
+            body {
+                -webkit-text-size-adjust: 100% !important;
+                text-size-adjust: 100% !important;
+                -moz-text-size-adjust: 100% !important;
+            }
+            .content {
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+            }
+            .title h1 {
+                font-size: 14px;
+                font-family: -ios-pictograph;
+            }
+            .title .english {
+                width: 78%;
+                text-align: center;
+                line-height: 1;
+                margin: 0 auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .title #language {
+                right: 1%;
+                width: 4%
+            }
+            .left {
+                width: 90%;
+            }
+            .left .text , .left .label , .left .risk , .left .radio {
+                font-size: 14px;
+            }
+            .right {
+                width: 90%;
+                margin-top: 5%;
+                height: 47vh;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        <h1 class="english">A Calculation Tool Predict Cardiovascular Disease Risk in Diabetic Kidney Disease Patients</h1>
+        <h1>糖尿病肾病患者心脑血管疾病发病风险评估</h1>
+        <img src="{% static 'img/icon_zy@2x(1).png' %}" alt="" id="language">
+    </div>
+    <div class="content">
+        <div class="left">
+            <img src="{% static 'img/img.png' %}" alt="">
+            <div class="text">
+                This calculation tool is designed to calculate the risk
+                of developing a future cardiovascular disease. It is
+                only valid for diabetic kidney disease patients without
+                the history of cardiovascular disease.
+            </div>
+            <div class="radio">
+                <label class="label">Incidence:</label>
+                <span class="radio-label">One year:&nbsp;<span id="one1"></span></span>
+                <span class="radio-label">Three year:&nbsp;<span id="three1"></span></span>
+                <span class="radio-label">Five years:&nbsp;<span id="five1"></span></span>
+                
+                
+            </div>
+            <div class="risk">
+                <span class="label" style="position: inherit;">Risk：</span>
+                <span id="risk1"></span>
+            </div>
+        </div>
+        <div class="left">
+            <img src="{% static 'img/img.png' %}" alt="">
+            <div class="text">
+                该计算工具用于预测患者发生心血管疾病的危险分数。仅适用于无心血管病史的糖尿病肾病患者。
+            </div>
+            <div class="radio">
+                <label class="label">发病风险:</label>
+                <span class="radio-label">一年：<span id="one2"></span></span>
+                <span class="radio-label">三年：<span id="three2"></span></span>
+                <span class="radio-label">五年：<span id="five2"></span></span>
+                
+            </div>
+            <div class="risk">
+                <span class="label" style="position: inherit;">风险等级：</span>
+                <span id="risk2"></span>
+            </div>
+        </div>
+        <div class="right">
+            <div class="img" id="charts"></div>
+        </div>
+    </div>
+
+    <script>
+        //中英文切换
+        var language = 1
+        $('.title h1').eq(language).hide()
+        $('.content .left').eq(language).hide()
+
+        $('#language').click(function () {
+            language = language == 1 ? 0 : 1
+            $('.title h1').show().eq(language).hide()
+            $('.content .left').show().eq(language).hide()
+            setPlot()
+        })
+
+        var layoutZH = {
+            title: '心脑血管疾病发病风险', 
+            yaxis: {
+                dtick:20,
+                range: [0, 100],
+                title: '时间（年）'
+            },
+            xaxis: {
+                dtick:1,
+                range: [0, 6.99],
+                title: '发病风险(%)'
+            }
+        }
+        var layoutEN = {
+            title: 'Cardiovascular Disease Risk', 
+            yaxis: {
+                dtick:20,
+                range: [0, 100],
+                title: 'Incidence(%)'
+            },
+            xaxis: {
+                dtick:1,
+                range: [0, 6.99],
+                title: 'Time(year)'
+            }
+        }
+
+        let data = '{{data}}'.replaceAll("&quot;", "\"")
+        let dataArr = JSON.parse(data)
+        let xdata = Object.keys(dataArr)
+        let ydata = Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]})
+        let threshold = (1-0.381376380968863) * 100
+
+        function setPlot() {
+            Plotly.newPlot('charts', [{
+                x: xdata,
+                y: ydata,
+                type: 'scatter'
+                }],
+                language == 1 ? layoutEN : layoutZH
+            )
+        }
+        setPlot()
+        checkRisk("4.983561644")
+        $('#one1').html(dataArr["1.0"].toFixed(2) + "%")
+        $('#three1').html(dataArr["2.983561644"].toFixed(2) + "%")
+        $('#five1').html(dataArr["4.983561644"].toFixed(2) + "%")
+        $('#one2').html(dataArr["1.0"].toFixed(2) + "%")
+        $('#three2').html(dataArr["2.983561644"].toFixed(2) + "%")
+        $('#five2').html(dataArr["4.983561644"].toFixed(2) + "%")
+        // $('#threshold').html(threshold.toFixed(2) + "%")
+        // function download() {
+        //     $('.modebar').find('.modebar-group').find('a')[0].click()
+        // }
+
+        // $('input[type=radio][name=radio]').change(function(e) {
+        //     checkRisk(this.value)
+        // })
+
+        function checkRisk(value) {
+            // $('#risk').html(dataArr[value] > 0.381376380968863 ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
+            $('#risk1').html(dataArr[value] < threshold ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
+            $('#risk2').html(dataArr[value] < threshold ? '<span style="color: #40bcf7">低风险</span>' : '<span style="color: #db5724">高风险</span>')
+        }
+
+        window.onresize = function(){
+            setPlot()
+        }
+    
+    </script>
+</body>
+
+</html>
