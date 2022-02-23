@@ -22,6 +22,7 @@ from django.conf.urls import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('generate/',include('generateapp.urls')),
+    path('generate/recalculate',t_views.recalculate),
     # path('ajax/', t_views.ajax),
     path('generate/result/',t_views.result),
 ]
