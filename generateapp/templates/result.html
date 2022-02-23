@@ -300,7 +300,7 @@
         let xdata = Object.keys(dataArr)
         let ydata = Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]})
         // let threshold = (1-0.381376380968863) * 100
-        let threshold = (0.5216) * 100
+        let threshold = 0.5606 * 100
         async function setPlot() {
             await Plotly.newPlot('charts', [{
                 x: xdata,

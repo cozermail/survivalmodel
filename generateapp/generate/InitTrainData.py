@@ -58,11 +58,11 @@ def initTrain():
     # the arguments of dsnn can be obtained by Bayesian Hyperparameters Tuning.
     # It would affect your model performance largely!
     nn_config = {
-        "learning_rate": 0.2,
+        "learning_rate": 0.1,
         "learning_rate_decay": 1,
         "activation": 'tanh',
-        "L1_reg": 0.000207289889856844,
-        "L2_reg": 0.000251431561213258,
+        "L1_reg": 0.000095882328054111 ,
+        "L2_reg": 0.000937799605135647,
         "optimizer": 'adam',#adam
         "dropout_keep_prob":0.9,
         "seed": 1
@@ -82,9 +82,10 @@ def initTrain():
     # `num_steps` is 7also an important parameters
     watch_list = trainModel.train(
         survTrain[X_cols], survTrain[Y_col],
-        num_steps=3200,
+        num_steps=2400,
         num_skip_steps=100,
-        plot=True
+        plot=True,
+        #load_model="model.ckpt"
     )
 
     #训练集
