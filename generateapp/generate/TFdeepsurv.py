@@ -66,7 +66,7 @@ def generate(param):
     pred_hr2=settings.TRAIN_MODEL.predict(surv_test.loc[0:0, X_cols], output_margin=False)
     # data = pd.DataFrame(settings.TRAIN_MODEL.BSF.iloc[:, 0].values ** pred_hr2, columns=settings.TRAIN_MODEL.BSF.index.values)
     data = pd.DataFrame((1 - settings.TRAIN_MODEL.BSF.iloc[:, 0].values ** pred_hr2) * 100, columns=settings.TRAIN_MODEL.BSF.index.values)
-    data.to_csv("C:\\Users\\Administrator\\Desktop\\survf2.csv")
+    # data.to_csv("C:\\Users\\Administrator\\Desktop\\survf2.csv")
     # pd.set_option('display.width', 300) # 设置字符显示宽度
     # pd.set_option('display.max_rows', None) # 设置显示最大行
     # pd.set_option('display.max_columns', None) # 设置显示最大列，None为显示所有列
