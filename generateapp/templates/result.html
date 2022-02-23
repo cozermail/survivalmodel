@@ -69,39 +69,11 @@
         }
 
         .left .text {
-            margin-top: 2vh;
+            margin-top: 4vh;
             font-family: -webkit-pictograph;
             font-weight: 400;
             color: #666666;
-            font-size: 1.2vw;
-        }
-
-        .left .radio {
-            margin: 2vh 0;
-            font-weight: bold;
-            color: #111111;
-            font-size: 1vw;
-        }
-        .left .radio .radio-label {
-            margin-right: 25%;
-            margin-left: 25%;
-        }
-
-        .left .risk {
-            font-size: 1vw;
-        }
-
-        .left .label {
-            width: 15%;
-            font-family: Roboto-Bold, Roboto;
-            font-weight: bold;
-            color: #333333;
-            font-size: 1.2vw;
-            position: absolute;
-        }
-
-        .left .radio input {
-            margin-right: 5px;
+            font-size: 1.5vw;
         }
 
         .right {
@@ -113,23 +85,51 @@
             text-align: center;
         }
 
+        .right-div .radio {
+            font-weight: bold;
+            color: #111111;
+            font-size: 1.2vw;
+            width: 70%; 
+            float: left;
+        }
+        .right-div .radio .radio-label {
+            text-align: left;
+        }
+
+        .right .risk {
+            font-size: 1.2vw;
+            width: 30%; 
+        }
+        
+
+        .right .label {
+            font-family: Roboto-Bold, Roboto;
+            font-weight: bold;
+            color: #333333;
+            font-size: 1.2vw;
+        }
+
+        .right .radio input {
+            margin-right: 5px;
+        }
+
         .img {
             width: 86%;
             height: 70%;
             background: #FFFFFF;
-            margin: 40px auto;
+            margin: 10px auto;
         }
 
-        button {
-            width: 80%;
-            margin: 0 auto;
+        .button {
             background-color: #015C95;
             border: 1px solid #015C95;
             border-radius: 1px;
             color: #ffffff;
+            display: inline-block;
             font-weight: normal;
             line-height: 1.2;
             padding: 1vw 0.8vw;
+            width: 100%;
             border-radius: 8px;
         }
         @media (max-width: 768px){
@@ -170,7 +170,7 @@
             .right {
                 width: 90%;
                 margin-top: 5%;
-                height: 47vh;
+                height: 55vh;
                 font-size: 12px;
             }
         }
@@ -192,51 +192,79 @@
                 only valid for diabetic kidney disease patients without
                 the history of cardiovascular disease.
             </div>
-            <div class="radio">
-                <label class="label">Incidence:</label>
-                <span class="radio-label">One year:&nbsp;<span id="one1"></span></span>
-                <span class="radio-label">Three year:&nbsp;<span id="three1"></span></span>
-                <span class="radio-label">Five years:&nbsp;<span id="five1"></span></span>
-                
-                
-            </div>
-            <div class="risk">
-                <span class="label" style="position: inherit;">Risk：</span>
-                <span id="risk1"></span>
-            </div>
         </div>
+        
         <div class="left">
             <img src="{% static 'img/img.png' %}" alt="">
             <div class="text">
-                该计算工具用于预测患者发生心血管疾病的危险分数。仅适用于无心血管病史的糖尿病肾病患者。
-            </div>
-            <div class="radio">
-                <label class="label">发病风险:</label>
-                <span class="radio-label">一年：<span id="one2"></span></span>
-                <span class="radio-label">三年：<span id="three2"></span></span>
-                <span class="radio-label">五年：<span id="five2"></span></span>
-                
-            </div>
-            <div class="risk">
-                <span class="label" style="position: inherit;">风险等级：</span>
-                <span id="risk2"></span>
+                该计算工具用于预测患者发生心脑血管疾病的危险分数。仅适用于无心脑血管疾病病史的糖尿病肾病患者。
+                心脑血管疾病包括冠心病、心力衰竭、脑血管疾病（不包括蛛网膜下腔出血）和外周动脉疾病。
             </div>
         </div>
+        
         <div class="right">
             <div class="img" id="charts"></div>
+
+            <div class="right-div">
+                <div class="risk radio">
+                    <label class="label">Incidence:</label>
+                </div>
+                <div class="radio">
+                    <div class="radio-label">One year:<span id="one1"></span></div>
+                    <div class="radio-label">Three year:<span id="three1"></span></div>
+                    <div class="radio-label">Five years:<span id="five1"></span></div>
+                </div>
+                <div class="risk radio">
+                    <span class="label">Risk：</span>
+                </div>
+                <div class="radio">
+                    <div id="risk1" class="radio-label"></div>
+                </div>
+                <input type="button" class="button" style="font-weight: 900; font-size: 20px;" value="Recalculate" id="recal_culate">
+            </div>
+            
+            <div class="right-div">
+                <div class="risk radio">
+                    <label class="label">发病风险:</label>
+                </div>
+                <div class="radio">
+                    <div class="radio-label">一年：<span id="one2"></span></div>
+                    <div class="radio-label">三年：<span id="three2"></span></div>
+                    <div class="radio-label">五年：<span id="five2"></span></div>
+                </div>
+                <div class="risk radio">
+                    <span class="label">风险等级：</span>
+                </div>
+                <div class="radio">
+                    <div id="risk2" class="radio-label"></div>
+                </div>
+                
+                <input type="button" class="button" style="font-weight: 900; font-size: 20px;" value="重新计算" id="recal_culate">
+            </div>
         </div>
     </div>
-
+    <form hidden id="reset" action="/generate/recalculate" method="post" target="_blank">
+        <input id="smokingStatus" name="smokingStatus"/>
+        <input id="Age" name="Age"/>
+        <input id="SBP" name="SBP"/>
+        <input id="TC" name="TC"/>
+        <input id="Hb" name="Hb"/>
+        <input id="HDL" name="HDL"/>
+        <input id="_24HourUrinaryProtein" name="_24HourUrinaryProtein"/>
+    </form>
     <script>
         //中英文切换
-        var language = 1
+        var language = '{{language}}'
         $('.title h1').eq(language).hide()
         $('.content .left').eq(language).hide()
+        $('.content .right-div').eq(language).hide()
+        
 
         $('#language').click(function () {
             language = language == 1 ? 0 : 1
             $('.title h1').show().eq(language).hide()
             $('.content .left').show().eq(language).hide()
+            $('.content .right-div').show().eq(language).hide()
             setPlot()
         })
 
@@ -244,20 +272,20 @@
             title: '心脑血管疾病发病风险', 
             yaxis: {
                 dtick:20,
-                range: [0, 100],
-                title: '时间（年）'
+                range: [0, 110],
+                title: '发病风险(%)'
             },
             xaxis: {
                 dtick:1,
                 range: [0, 6.99],
-                title: '发病风险(%)'
+                title: '时间（年）'
             }
         }
         var layoutEN = {
             title: 'Cardiovascular Disease Risk', 
             yaxis: {
                 dtick:20,
-                range: [0, 100],
+                range: [0, 110],
                 title: 'Incidence(%)'
             },
             xaxis: {
@@ -271,16 +299,23 @@
         let dataArr = JSON.parse(data)
         let xdata = Object.keys(dataArr)
         let ydata = Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]})
-        let threshold = (1-0.381376380968863) * 100
-
-        function setPlot() {
-            Plotly.newPlot('charts', [{
+        // let threshold = (1-0.381376380968863) * 100
+        let threshold = (0.5216) * 100
+        async function setPlot() {
+            await Plotly.newPlot('charts', [{
                 x: xdata,
                 y: ydata,
                 type: 'scatter'
                 }],
                 language == 1 ? layoutEN : layoutZH
-            )
+            );
+            $($('.modebar-group')).find('a[data-title="Zoom in"]').css('display', 'none')
+            $($('.modebar-group')).find('a[data-title="Zoom out"]').css('display', 'none')
+            $($('.modebar-group')).find('a[data-title="Autoscale"]').css('display', 'none')
+            $($('.modebar-group')).find('a[data-title="Reset axes"]').css('display', 'none')
+            $($('.modebar-group')).find('a[data-title="Produced with Plotly"]').css('display', 'none')
+            
+            
         }
         setPlot()
         checkRisk("4.983561644")
@@ -301,9 +336,21 @@
 
         function checkRisk(value) {
             // $('#risk').html(dataArr[value] > 0.381376380968863 ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
-            $('#risk1').html(dataArr[value] < threshold ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
-            $('#risk2').html(dataArr[value] < threshold ? '<span style="color: #40bcf7">低风险</span>' : '<span style="color: #db5724">高风险</span>')
+            $('#risk1').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
+            $('#risk2').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
         }
+
+        $('#recal_culate').click(function() {
+
+            $("#smokingStatus").val('{{smokingStatus}}')
+            $("#Age").val('{{Age}}')
+            $("#SBP").val('{{SBP}}')
+            $("#TC").val('{{TC}}')
+            $("#Hb").val('{{Hb}}')
+            $("#HDL").val('{{HDL}}')
+            $("#_24HourUrinaryProtein").val('{{HourUrinaryProtein}}')
+            $('#reset').submit()
+        })
 
         window.onresize = function(){
             setPlot()

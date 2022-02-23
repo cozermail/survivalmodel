@@ -354,7 +354,7 @@
                 <div>
                     <label>Age</label>
                     <input type="text" id="Age" name="Age"
-                        onblur="verifyValue(value,'Age','Please input the value between 18 and 90.',18,90)"
+                        onblur="verifyValue(value,'Age','Age: Please input the value between 18 and 90.',18,90)"
                         onkeyup="value=value.replace(/(?![\d])./g,'')" placeholder="Please enter" style="width: 100%;"
                         autocomplete="off">
                 </div>
@@ -363,7 +363,7 @@
                         <label for="SBP">Systolic pressure</label>
                         <div class="input">
                             <input type="text" id="SBP" name="SBP"
-                                onblur="verifyValue(value,'SBP','Please input the value between 70 and 250.',70,250)"
+                                onblur="verifyValue(value,'SBP','Systolic pressure: Please input the value between 70 and 250.',70,250)"
                                 onkeyup="value=value.replace(/(?![\d])./g, '')"
                                 placeholder="Please enter"  autocomplete="off">
                             <span>mmHg</span>
@@ -373,7 +373,7 @@
                         <label for="TC">Total cholesterol</label>
                         <div class="input">
                             <input type="text" id="TC" name="TC"
-                                onblur="verifyValue(value,'TC','Please input the value between 1 and 15.',1,15)"
+                                onblur="verifyValue(value,'TC','Total cholesterol: Please input the value between 1 and 15.',1,15)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
                                 placeholder="Please enter" autocomplete="off">
                             <span>mmol/L</span>
@@ -385,7 +385,7 @@
                         <label for="Hb">Hemoglobin</label>
                         <div class="input">
                             <input type="text" id="Hb" name="Hb"
-                                onblur="verifyValue(value,'Hb','Please input the value between 50 and 180.',50,180)"
+                                onblur="verifyValue(value,'Hb','Hemoglobin: Please input the value between 50 and 180.',50,180)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
                                 placeholder="Please enter" autocomplete="off">
                             <span>g/L</span>
@@ -395,7 +395,7 @@
                         <label for="HDL">High density liptein</label>
                         <div class="input">
                             <input type="text" id="HDL" name="HDL"
-                                onblur="verifyValue(value,'HDL','Please input the value between 0 and 5.',0,5)"
+                                onblur="verifyValue(value,'HDL','High density liptein: Please input the value between 0 and 5.',0,5)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '$1')"
                                 placeholder="Please enter" autocomplete="off">
                             <span>mmol/L</span>
@@ -406,14 +406,16 @@
                     <label for="_24HourUrinaryProtein">24-hour urinary protein excretion</label>
                     <div class="input">
                         <input type="text" id="_24HourUrinaryProtein" name="_24HourUrinaryProtein"
-                            onblur="verifyValue(value,'_24HourUrinaryProtein','Please input the value between 0 and 30.',0,30)"
+                            onblur="verifyValue(value,'_24HourUrinaryProtein','24-hour urinary protein excretion: Please input the value between 0 and 30.',0,30)"
                             onkeyup="value=value.replace(/(?![\d]|[.])./g, '$1')"
                             placeholder="Please enter" style="width: 30%;" autocomplete="off">
                         <span>g</span>
                     </div>
                 </div>
-                <input type="submit" class="button" value="Calculate" id="submit">
+                <input type="hidden" name="languageNum" id="languageNum"/>
+                <button type="submit" class="button" style="font-weight: 900; font-size: 20px;" value="Calculate" id="submit">Calculate</button>
             </form>
+
             <form class="validate" id="myForm0" action="result/" method="post" target="_blank">
                 <div class="hint">请在下方输入最新的个人信息，然后点击计算。</div>
                 <div>
@@ -427,7 +429,7 @@
                 <div>
                     <label>年龄</label>
                     <input type="text" id="Age" name="Age" 
-                    onblur="verifyValue(value,'Age','请输入 18 - 90 之间的任意数值。',18,90)"
+                    onblur="verifyValue(value,'Age','年龄：请输入 18 - 90 之间的任意数值。',18,90)"
                      onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入"
                         style="width: 100%;" autocomplete="off">
                 </div>
@@ -435,7 +437,7 @@
                     <div>
                         <label for="SBP">收缩压</label>
                         <div class="input">
-                            <input type="text" id="SBP" name="SBP" onblur="verifyValue(value,'SBP','请输入 70 - 250 之间的任意数值。',70,250)"
+                            <input type="text" id="SBP" name="SBP" onblur="verifyValue(value,'SBP','收缩压：请输入 70 - 250 之间的任意数值。',70,250)"
                                 onkeyup="value=value.replace(/(?![\d])./g, '')"
                                 placeholder="请输入"  autocomplete="off">
                             <span>mmHg</span>
@@ -445,7 +447,7 @@
                         <label for="TC">总胆固醇</label>
                         <div class="input">
                             <input type="text" id="TC" name="TC"
-                                onblur="verifyValue(value,'TC','请输入 1 - 15 之间的任意数值。',1,15)"
+                                onblur="verifyValue(value,'TC','总胆固醇：请输入 1 - 15 之间的任意数值。',1,15)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
                                 placeholder="请输入" autocomplete="off">
                             <span>mmol/L</span>
@@ -457,7 +459,7 @@
                         <label for="Hb">血红蛋白</label>
                         <div class="input">
                             <input type="text" id="Hb" name="Hb"
-                            onblur="verifyValue(value,'Hb','请输入 50 - 180 之间的任意数值。',50,180)"
+                            onblur="verifyValue(value,'Hb','血红蛋白：请输入 50 - 180 之间的任意数值。',50,180)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
                                 placeholder="请输入" autocomplete="off">
                             <span>g/L</span>
@@ -467,7 +469,7 @@
                         <label for="HDL">高密度脂蛋白</label>
                         <div class="input">
                             <input type="text" id="HDL" name="HDL"
-                             onblur="verifyValue(value,'HDL','请输入 0 - 5 之间的任意数值。',0,5)"
+                             onblur="verifyValue(value,'HDL','高密度脂蛋白：请输入 0 - 5 之间的任意数值。',0,5)"
                                 onkeyup="value=value.replace(/(?![\d]|[.])./g, '')"
                                 placeholder="请输入" autocomplete="off">
                             <span>mmol/L</span>
@@ -478,17 +480,49 @@
                     <label for="_24HourUrinaryProtein">24小时尿蛋白定量</label>
                     <div class="input">
                         <input type="text" id="_24HourUrinaryProtein" name="_24HourUrinaryProtein" 
-                        onblur="verifyValue(value,'_24HourUrinaryProtein','请输入0-30之间的任意数值。',0,30)"
+                        onblur="verifyValue(value,'_24HourUrinaryProtein','24小时尿蛋白定量：请输入0-30之间的任意数值。',0,30)"
                             onkeyup="value=value.replace(/(?![\d]|[.])./g, '')" placeholder="请输入"
                             style="width: 30%;" autocomplete="off">
                         <span>g</span>
                     </div>
                 </div>
-                <input type="submit" class="button" value="计算" id="submit">
+                <input type="hidden" name="languageNum" id="languageNum"/>
+                <button type="submit" class="button" style="font-weight: 900; font-size: 20px;" value="计   算" id="submit">计   算</button>
             </form>
         </div>
     </div>
     <script>
+
+        init();
+
+        function init() {
+            
+            let smokingStatus = '{{smokingStatus}}'
+            let Age = '{{Age}}'
+            let SBP = '{{SBP}}'
+            let TC = '{{TC}}'
+            let Hb = '{{Hb}}'
+            let HDL = '{{HDL}}'
+            let _24HourUrinaryProtein = '{{HourUrinaryProtein}}'
+            
+            $('#myForm1 #smokingStatus').val(smokingStatus ? smokingStatus : '0')
+            $('#myForm1 #Age').val(Age ? Age : '')
+            $('#myForm1 #SBP').val(SBP ? SBP : '')
+            $('#myForm1 #TC').val(TC ? TC : '')
+            $('#myForm1 #Hb').val(Hb ? Hb : '')
+            $('#myForm1 #HDL').val(HDL ? HDL : '')
+            $('#myForm1 #_24HourUrinaryProtein').val(_24HourUrinaryProtein ? _24HourUrinaryProtein : '')
+            
+            $('#myForm0 #smokingStatus').val($('#myForm1 #smokingStatus').val())
+            $('#myForm0 #Age').val($('#myForm1 #Age').val())
+            $('#myForm0 #SBP').val($('#myForm1 #SBP').val())
+            $('#myForm0 #TC').val($('#myForm1 #TC').val())
+            $('#myForm0 #Hb').val($('#myForm1 #Hb').val())
+            $('#myForm0 #HDL').val($('#myForm1 #HDL').val())
+            $('#myForm0 #_24HourUrinaryProtein').val($('#myForm1 #_24HourUrinaryProtein').val())
+            
+        }
+
         //中英文切换
         var language = 1
         $('.title h1').eq(language).hide()
@@ -500,6 +534,23 @@
             $('.title h1').show().eq(language).hide()
             $('.content .left').show().eq(language).hide()
             $('.content .right .validate').show().eq(language).hide()
+            if (language) {
+                $('#myForm1 #smokingStatus').val($('#myForm0 #smokingStatus').val())
+                $('#myForm1 #Age').val($('#myForm0 #Age').val())
+                $('#myForm1 #SBP').val($('#myForm0 #SBP').val())
+                $('#myForm1 #TC').val($('#myForm0 #TC').val())
+                $('#myForm1 #Hb').val($('#myForm0 #Hb').val())
+                $('#myForm1 #HDL').val($('#myForm0 #HDL').val())
+                $('#myForm1 #_24HourUrinaryProtein').val($('#myForm0 #_24HourUrinaryProtein').val())
+            } else {
+                $('#myForm0 #smokingStatus').val($('#myForm1 #smokingStatus').val())
+                $('#myForm0 #Age').val($('#myForm1 #Age').val())
+                $('#myForm0 #SBP').val($('#myForm1 #SBP').val())
+                $('#myForm0 #TC').val($('#myForm1 #TC').val())
+                $('#myForm0 #Hb').val($('#myForm1 #Hb').val())
+                $('#myForm0 #HDL').val($('#myForm1 #HDL').val())
+                $('#myForm0 #_24HourUrinaryProtein').val($('#myForm1 #_24HourUrinaryProtein').val())
+            }
         })
 
         //获取文本宽度
@@ -530,7 +581,7 @@
         document.addEventListener('submit', function (event) {
             // event.preventDefault()
             const formId = 'myForm' + language
-
+            
             const form = {}
             form.smokingStatus = $('#' + `${formId}` + ' #smokingStatus').val()
             form.Age = $('#' + `${formId}` + ' #Age').val()
@@ -591,7 +642,8 @@
                 }
 
             }
-        }, false);
+            $('#' + `${formId}` +' #languageNum').val(language)
+        });
 
         // Check all fields on submit
         // document.addEventListener('submit', function (event) {

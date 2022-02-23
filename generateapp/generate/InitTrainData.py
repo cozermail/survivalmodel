@@ -5,7 +5,7 @@ import pandas as pd
 from generateapp.tfdeepsurv.datasets import survival_df
 from generateapp.tfdeepsurv.datasets import survival_stats
 from generateapp.tfdeepsurv import dsnn
-
+import csv
 import os
 
 survTrain = {}
@@ -15,13 +15,15 @@ def initTrain():
     new_col = ['Smoking Status', 'Age', 'SBP', 'TC', 'Hb', 'HDL', '24-hour urinary protein', 'Time', 'Event']
     train_data = pd.read_csv(train_data_url, names = new_col, header=0)
     # test_data = pd.read_csv('C:/Users/Administrator/Desktop/文档/临时项目/预测模型-任晶晶/data/test.csv', names = new_col, header=0)
-    train_data["Smoking Status"]=(train_data["Smoking Status"]-0.339325843)/0.701535834
-    train_data["Age"]=(train_data["Age"]-52.06741573)/12.02612244
-    train_data["SBP"]=(train_data["SBP"]-137.6449438)/17.7050513674092
+    train_data["Smoking Status"]=(train_data["Smoking Status"]-0.339325842696629)/0.701535833637939
+    train_data["Age"]=(train_data["Age"]-52.0674157303371)/12.0261224418172
+    train_data["SBP"]=(train_data["SBP"]-137.644943820225)/17.7050513674092
     train_data["TC"]=(train_data["TC"]-4.72598876404494)/1.53597181816442
     train_data["Hb"]=(train_data["Hb"]-113.039101123595)/24.1637793642026
     train_data["HDL"]=(train_data["HDL"]-1.15208988764045)/0.405865754940884
     train_data["24-hour urinary protein"]=(train_data["24-hour urinary protein"]-4.26793258426966)/4.34121954893472
+
+    
     # print(train_data)
     train_data.head()
     #Dataset statistics
@@ -52,15 +54,15 @@ def initTrain():
     # Number of features in your dataset
     input_nodes =len(survTrain.columns) - 1
     # Specify your neural network structure
-    hidden_layers_nodes = [7, 3, 1]
+    hidden_layers_nodes = [7, 4, 1]
     # the arguments of dsnn can be obtained by Bayesian Hyperparameters Tuning.
     # It would affect your model performance largely!
     nn_config = {
         "learning_rate": 0.2,
         "learning_rate_decay": 1,
         "activation": 'tanh',
-        "L1_reg": 0.000969326675720369,
-        "L2_reg": 0.000426857206400417,
+        "L1_reg": 0.000207289889856844,
+        "L2_reg": 0.000251431561213258,
         "optimizer": 'adam',#adam
         "dropout_keep_prob":0.9,
         "seed": 1
@@ -78,12 +80,17 @@ def initTrain():
     # read comments of `train()` function if necessary.
     # ESSENTIAL STEP-3: Train Model
     # `num_steps` is 7also an important parameters
-    trainModel.train(
+    watch_list = trainModel.train(
         survTrain[X_cols], survTrain[Y_col],
-        num_steps=2100,
+        num_steps=3200,
         num_skip_steps=100,
         plot=True
     )
+
+    #训练集
+    pred_hr1 = trainModel.predict(survTrain.loc[0:623, X_cols], output_margin=False)
+    survf1 = pd.DataFrame(trainModel.BSF.iloc[:, 0].values ** pred_hr1, columns = trainModel.BSF.index.values)
+    # survf1.to_csv("C:\\Users\\Administrator\\Desktop\\survf1.csv")
 
 def getSurvTrain():
     return survTrain

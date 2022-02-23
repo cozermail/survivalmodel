@@ -23,8 +23,8 @@ def index(myrequest):
 #     # return JsonResponse(res)
 
 def result(request):
-    if request.method == 'GET':
-        return render(request, 'generateapp/templates/result.html')
+    # if request.method == 'GET':
+    #     return render(request, 'generateapp/templates/result.html')
 
     smokingStatusStr = request.POST.get("smokingStatus")
     AgeStr = request.POST.get("Age")
@@ -45,4 +45,36 @@ def result(request):
     params = [[smokingStatus, Age, SBP, TC, Hb, HDL, _24HourUrinaryProtein, 0, 0]]
     
     res = generate(params)
+    res["language"] = request.POST.get("languageNum")
+    res["smokingStatus"] = smokingStatusStr
+    res["Age"] = AgeStr
+    res["SBP"] = SBPStr
+    res["TC"] = TCStr
+    res["Hb"] = HbStr
+    res["HDL"] = HDLStr
+    res["HourUrinaryProtein"] = _24HourUrinaryProteinStr
     return render(request, 'generateapp/templates/result.html', res)
+
+
+
+def recalculate(request):
+
+    smokingStatusStr = request.POST.get("smokingStatus")
+    AgeStr = request.POST.get("Age")
+    SBPStr = request.POST.get("SBP")
+    TCStr = request.POST.get("TC")
+    HbStr = request.POST.get("Hb")
+    HDLStr = request.POST.get("HDL")
+    _24HourUrinaryProteinStr = request.POST.get("_24HourUrinaryProtein")
+
+    res = {}
+    res["language"] = request.POST.get("languageNum")
+    res["smokingStatus"] = smokingStatusStr
+    res["Age"] = AgeStr
+    res["SBP"] = SBPStr
+    res["TC"] = TCStr
+    res["Hb"] = HbStr
+    res["HDL"] = HDLStr
+    res["HourUrinaryProtein"] = _24HourUrinaryProteinStr
+    
+    return render(request, 'generateapp/templates/form.html', res)

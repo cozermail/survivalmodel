@@ -9,9 +9,9 @@ from django.conf import settings
 def generate(param): 
     new_col = ['Smoking Status', 'Age', 'SBP', 'TC', 'Hb', 'HDL', '24-hour urinary protein', 'Time', 'Event']
     params = pd.DataFrame(columns = new_col, data=param)
-    params["Smoking Status"]=(params["Smoking Status"]-0.339325843)/0.701535834
-    params["Age"]=(params["Age"]-52.06741573)/12.02612244
-    params["SBP"]=(params["SBP"]-137.6449438)/17.7050513674092
+    params["Smoking Status"]=(params["Smoking Status"]-0.339325842696629)/0.701535833637939
+    params["Age"]=(params["Age"]-52.0674157303371)/12.0261224418172
+    params["SBP"]=(params["SBP"]-137.644943820225)/17.7050513674092
     params["TC"]=(params["TC"]-4.72598876404494)/1.53597181816442
     params["Hb"]=(params["Hb"]-113.039101123595)/24.1637793642026
     params["HDL"]=(params["HDL"]-1.15208988764045)/0.405865754940884
@@ -31,7 +31,7 @@ def generate(param):
     # from generateapp.tfdeepsurv.datasets import survival_df
 
     surv_test = survival_df(params, t_col=colname_t, e_col=colname_e, label_col="Y")
-    # print(surv_test)
+    # print(surv_test) 
     #Model initialization¶
     #NOTE: You can freely change all hyper-parameters during model initialization or training as you want.
     #All hyper-parameters is as follows:
@@ -66,7 +66,7 @@ def generate(param):
     pred_hr2=settings.TRAIN_MODEL.predict(surv_test.loc[0:0, X_cols], output_margin=False)
     # data = pd.DataFrame(settings.TRAIN_MODEL.BSF.iloc[:, 0].values ** pred_hr2, columns=settings.TRAIN_MODEL.BSF.index.values)
     data = pd.DataFrame((1 - settings.TRAIN_MODEL.BSF.iloc[:, 0].values ** pred_hr2) * 100, columns=settings.TRAIN_MODEL.BSF.index.values)
-
+    data.to_csv("C:\\Users\\Administrator\\Desktop\\survf2.csv")
     # pd.set_option('display.width', 300) # 设置字符显示宽度
     # pd.set_option('display.max_rows', None) # 设置显示最大行
     # pd.set_option('display.max_columns', None) # 设置显示最大列，None为显示所有列
