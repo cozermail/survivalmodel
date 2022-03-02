@@ -44,6 +44,7 @@
             right: 5%;
             transform: translateX(-50%);
             width: 2%;
+            cursor: pointer;
         }
 
         .title img {
@@ -198,6 +199,9 @@
             padding: 1vw 0.8vw;
             width: 100%;
             border-radius: 8px;
+            font-weight: 900; 
+            font-size: 20px;
+            cursor: pointer;
         }
 
         input.button {
@@ -216,7 +220,6 @@
         .button:active {
             box-shadow: inset 0 0.15625em 0.25em rgba(0, 0, 0, 0.15), 0 1px 0.15625em rgba(0, 0, 0, 0.05);
         }
-
         @media (max-width: 768px) {
             body {
                 -webkit-text-size-adjust: 100% !important;
@@ -341,7 +344,7 @@
             </div>
         </div>
         <div class="right">
-            <form class="validate" id="myForm1" action="result/" method="post" target="_blank">
+            <form class="validate" id="myForm0" action="result/" method="post" target="_blank">
                 <div class="hint">Enter the information below with your most recent values, then click Calculate. </div>
                 <div>
                     <label for="smokingStatus">Smoking status</label>
@@ -413,10 +416,10 @@
                     </div>
                 </div>
                 <input type="hidden" name="languageNum" id="languageNum"/>
-                <button type="submit" class="button" style="font-weight: 900; font-size: 20px;" value="Calculate" id="submit">Calculate</button>
+                <button type="submit" class="button" value="Calculate" id="submit">Calculate</button>
             </form>
 
-            <form class="validate" id="myForm0" action="result/" method="post" target="_blank">
+            <form class="validate" id="myForm1" action="result/" method="post" target="_blank">
                 <div class="hint">请在下方输入最新的个人信息，然后点击计算。</div>
                 <div>
                     <label for="smokingStatus">吸烟</label>
@@ -487,7 +490,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="languageNum" id="languageNum"/>
-                <button type="submit" class="button" style="font-weight: 900; font-size: 20px;" value="计   算" id="submit">计   算</button>
+                    <button type="submit" class="button" value="计   算" id="submit">计   算</button>
             </form>
         </div>
     </div>
@@ -524,16 +527,16 @@
         }
 
         //中英文切换
-        var language = 1
-        $('.title h1').eq(language).hide()
-        $('.content .left').eq(language).hide()
-        $('.content .right .validate').eq(language).hide()
+        var language = '{{language}}' == 1 ? 1 : 0
+        $('.title h1').hide().eq(language).show()
+        $('.content .left').hide().eq(language).show()
+        $('.content .right .validate').hide().eq(language).show()
 
         $('#language').click(function () {
             language = language == 1 ? 0 : 1
-            $('.title h1').show().eq(language).hide()
-            $('.content .left').show().eq(language).hide()
-            $('.content .right .validate').show().eq(language).hide()
+            $('.title h1').hide().eq(language).show()
+            $('.content .left').hide().eq(language).show()
+            $('.content .right .validate').hide().eq(language).show()
             if (language) {
                 $('#myForm1 #smokingStatus').val($('#myForm0 #smokingStatus').val())
                 $('#myForm1 #Age').val($('#myForm0 #Age').val())

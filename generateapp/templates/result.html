@@ -77,12 +77,18 @@
         }
 
         .right {
-            width: 45%;
+            width: 48%;
             height: 100%;
             overflow-y: auto;
             background: rgba(1, 92, 149, 0.09);
             border-radius: 12px;
             text-align: center;
+        }
+
+        .right-div {
+            margin-bottom: 10px;
+            float: left;
+            width: 100%;
         }
 
         .right-div .radio {
@@ -91,6 +97,7 @@
             font-size: 1.2vw;
             width: 70%; 
             float: left;
+            margin-bottom: 10px;
         }
         .right-div .radio .radio-label {
             text-align: left;
@@ -99,6 +106,8 @@
         .right .risk {
             font-size: 1.2vw;
             width: 30%; 
+            text-align: right;
+            margin-right: 20px;
         }
         
 
@@ -115,7 +124,7 @@
 
         .img {
             width: 86%;
-            height: 70%;
+            height: 50%;
             background: #FFFFFF;
             margin: 10px auto;
         }
@@ -129,8 +138,11 @@
             font-weight: normal;
             line-height: 1.2;
             padding: 1vw 0.8vw;
-            width: 100%;
+            width: 88%;
             border-radius: 8px;
+            font-weight: 900; 
+            font-size: 20px;
+            cursor: pointer;
         }
         @media (max-width: 768px){
             body {
@@ -172,6 +184,10 @@
                 margin-top: 5%;
                 height: 55vh;
                 font-size: 12px;
+            }
+            .button {
+                margin-top: 10px;
+                padding: 10px 8px;
             }
         }
     </style>
@@ -215,17 +231,17 @@
                     <div class="radio-label">Five years:<span id="five1"></span></div>
                 </div>
                 <div class="risk radio">
-                    <span class="label">Risk：</span>
+                    <span class="label">Risk:</span>
                 </div>
                 <div class="radio">
                     <div id="risk1" class="radio-label"></div>
                 </div>
-                <input type="button" class="button" style="font-weight: 900; font-size: 20px;" value="Recalculate" id="recal_culate">
+                <input type="button" class="button recal-culate" value="Recalculate">
             </div>
             
             <div class="right-div">
                 <div class="risk radio">
-                    <label class="label">发病风险:</label>
+                    <label class="label">发病风险：</label>
                 </div>
                 <div class="radio">
                     <div class="radio-label">一年：<span id="one2"></span></div>
@@ -238,12 +254,13 @@
                 <div class="radio">
                     <div id="risk2" class="radio-label"></div>
                 </div>
+                <input type="button" class="button recal-culate" value="重新计算">
                 
-                <input type="button" class="button" style="font-weight: 900; font-size: 20px;" value="重新计算" id="recal_culate">
             </div>
         </div>
     </div>
     <form hidden id="reset" action="/generate/recalculate" method="post" target="_blank">
+        <input id="languageNum" name="languageNum"/>
         <input id="smokingStatus" name="smokingStatus"/>
         <input id="Age" name="Age"/>
         <input id="SBP" name="SBP"/>
@@ -254,44 +271,62 @@
     </form>
     <script>
         //中英文切换
-        var language = '{{language}}'
-        $('.title h1').eq(language).hide()
-        $('.content .left').eq(language).hide()
-        $('.content .right-div').eq(language).hide()
+        var language = '{{language}}' == 1 ? 1 : 0
+        $('.title h1').hide().eq(language).show()
+        $('.content .left').hide().eq(language).show()
+        $('.content .right-div').hide().eq(language).show()
         
 
         $('#language').click(function () {
             language = language == 1 ? 0 : 1
-            $('.title h1').show().eq(language).hide()
-            $('.content .left').show().eq(language).hide()
-            $('.content .right-div').show().eq(language).hide()
+            $('.title h1').hide().eq(language).show()
+            $('.content .left').hide().eq(language).show()
+            $('.content .right-div').hide().eq(language).show()
             setPlot()
         })
 
         var layoutZH = {
-            title: '心脑血管疾病发病风险', 
+            title: '心脑血管疾病发病风险',
+            titlefont: {
+                    size: 15,
+            },
             yaxis: {
                 dtick:20,
                 range: [0, 110],
-                title: '发病风险(%)'
+                title: '发病风险(%)',
+                titlefont: {
+                    size: 15,
+                }
             },
             xaxis: {
                 dtick:1,
                 range: [0, 6.99],
-                title: '时间（年）'
+                title: '时间（年）',
+                titlefont: {
+                    size: 15,
+                }
             }
         }
         var layoutEN = {
             title: 'Cardiovascular Disease Risk', 
+            titlefont: {
+                size: 15,
+            },
             yaxis: {
                 dtick:20,
                 range: [0, 110],
-                title: 'Incidence(%)'
+                title: 'Incidence(%)',
+                titlefont: {
+                    size: 15,
+                }
             },
             xaxis: {
                 dtick:1,
                 range: [0, 6.99],
-                title: 'Time(year)'
+                title: 'Time(year)',
+                titlefont: {
+                    size: 15,
+                }
             }
         }
 
@@ -307,14 +342,18 @@
                 y: ydata,
                 type: 'scatter'
                 }],
-                language == 1 ? layoutEN : layoutZH
+                language == 0 ? layoutEN : layoutZH
             );
             $($('.modebar-group')).find('a[data-title="Zoom in"]').css('display', 'none')
             $($('.modebar-group')).find('a[data-title="Zoom out"]').css('display', 'none')
             $($('.modebar-group')).find('a[data-title="Autoscale"]').css('display', 'none')
             $($('.modebar-group')).find('a[data-title="Reset axes"]').css('display', 'none')
             $($('.modebar-group')).find('a[data-title="Produced with Plotly"]').css('display', 'none')
-            
+
+            // 修改标题字体样式
+            $('.gtitle').css('font-weight', 'bold')
+            $('.xtitle').css('font-weight', 'bold')
+            $('.ytitle').css('font-weight', 'bold')
             
         }
         setPlot()
@@ -340,8 +379,9 @@
             $('#risk2').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
         }
 
-        $('#recal_culate').click(function() {
+        $('.recal-culate').click(function() {
 
+            $("#languageNum").val(language)
             $("#smokingStatus").val('{{smokingStatus}}')
             $("#Age").val('{{Age}}')
             $("#SBP").val('{{SBP}}')
