@@ -113,7 +113,7 @@
 
         .right .risk2 {
             font-size: 1.2vw;
-            width: 20%; 
+            width: 22%; 
             text-align: left;
             margin-left: 5%;
         }
@@ -131,7 +131,6 @@
 
         .img {
             width: 90%;
-            height: 80%;
             background: #FFFFFF;
             margin: 10px auto;
         }
@@ -189,7 +188,6 @@
             .right {
                 width: 90%;
                 margin-top: 5%;
-                height: 55vh;
                 font-size: 12px;
             }
             .button {
@@ -197,6 +195,12 @@
                 padding: 10px 8px;
             }
         }
+
+        .plot-container .plotly {
+                padding-bottom: 90%;
+                height: 0;
+                width: 90%;
+            }
     </style>
 </head>
 
@@ -297,6 +301,8 @@
             titlefont: {
                     size: 15,
             },
+            height: window.innerWidth > 768 ? window.innerWidth * 0.2656 : window.innerWidth * 0.82,
+            width: window.innerWidth > 768 ? window.innerWidth * 0.3456 : window.innerWidth * 0.82,
             yaxis: {
                 dtick:20,
                 range: [0, 110],
@@ -319,6 +325,8 @@
             titlefont: {
                 size: 15,
             },
+            height: window.innerWidth > 768 ? window.innerWidth * 0.2656 : window.innerWidth * 0.82,
+            width: window.innerWidth > 768 ? window.innerWidth * 0.3456 : window.innerWidth * 0.82,
             yaxis: {
                 dtick:20,
                 range: [0, 110],
