@@ -130,13 +130,14 @@ tail -f nohup.out
 - ### 可以编辑两个shell脚本start 和 stop 进行控制
 start.sh  
 ```sh
-ps -aux | grep python|xargs kill -9
-```
-stop.sh
-```sh
 nohup python3 manage.py runserver --noreload 0.0.0.0:8001 >nohup.out 2>&1 &
 
 tail -f nohup.out
+```
+
+stop.sh
+```sh
+ps -aux | grep python|xargs kill -9
 ```
 
 
