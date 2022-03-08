@@ -24,7 +24,7 @@ SECRET_KEY = '371=-2)r*7$^8(6po%oz&ii)^7wzg+#5^cc5@1=&@v^sg@xwj9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','120.27.130.226',socket.gethostbyname(socket.getfqdn(socket.gethostname()))]
+ALLOWED_HOSTS = ['127.0.0.1','localhost','120.27.130.226','121.40.71.19',socket.gethostbyname(socket.getfqdn(socket.gethostname()))]
 
 
 # Application definition
