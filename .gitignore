@@ -4,4 +4,6 @@
 /generateapp/__pycache__
 /survivalmodel/__pycache__
 /generateapp/generate/__pycache__
-/.vscode
+/generateapp/migrations/__pycache__
+/static/static_root/static_root/
+/tfdeepsurv/__pycache__
