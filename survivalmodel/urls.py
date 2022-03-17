@@ -24,7 +24,7 @@ urlpatterns = [
     path('generate/',include('generateapp.urls')),
     path('generate/recalculate',t_views.recalculate),
     # path('ajax/', t_views.ajax),
-    path('generate/result/',t_views.result),
+    path('generate/result',t_views.result),
 ]
 
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
