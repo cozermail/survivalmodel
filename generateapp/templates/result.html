@@ -282,7 +282,7 @@
     </form>
     <script>
         //中英文切换
-        var language = '{{language}}' == 1 ? 1 : 0
+        var language = '{{language}}' === '' ? 1 : '{{language}}'
         $('.title h1').hide().eq(language).show()
         $('.content .left').hide().eq(language).show()
         $('.content .right-div').hide().eq(language).show()
