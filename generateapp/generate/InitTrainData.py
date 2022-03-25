@@ -15,13 +15,13 @@ def initTrain():
     new_col = ['Smoking Status', 'Age', 'SBP', 'TC', 'Hb', 'HDL', '24-hour urinary protein', 'Time', 'Event']
     train_data = pd.read_csv(train_data_url, names = new_col, header=0)
     # test_data = pd.read_csv('C:/Users/Administrator/Desktop/文档/临时项目/预测模型-任晶晶/data/test.csv', names = new_col, header=0)
-    train_data["Smoking Status"]=(train_data["Smoking Status"]-0.339325842696629)/0.701535833637939
-    train_data["Age"]=(train_data["Age"]-52.0674157303371)/12.0261224418172
-    train_data["SBP"]=(train_data["SBP"]-137.644943820225)/17.7050513674092
-    train_data["TC"]=(train_data["TC"]-4.72598876404494)/1.53597181816442
-    train_data["Hb"]=(train_data["Hb"]-113.039101123595)/24.1637793642026
-    train_data["HDL"]=(train_data["HDL"]-1.15208988764045)/0.405865754940884
-    train_data["24-hour urinary protein"]=(train_data["24-hour urinary protein"]-4.26793258426966)/4.34121954893472
+    train_data["Smoking Status"]=(train_data["Smoking Status"]-0.339325843)/0.701535834
+    train_data["Age"]=(train_data["Age"]-52.06741573)/12.02612244
+    train_data["SBP"]=(train_data["SBP"]-137.6786517)/17.6498914
+    train_data["TC"]=(train_data["TC"]-4.735662921)/1.558955283
+    train_data["Hb"]=(train_data["Hb"]-113.0842697)/24.17123447
+    train_data["HDL"]=(train_data["HDL"]-1.146449438)/0.407353913
+    train_data["24-hour urinary protein"]=(train_data["24-hour urinary protein"]-3.937786517)/4.124942204
 
     
     # print(train_data)
@@ -61,8 +61,8 @@ def initTrain():
         "learning_rate": 0.1,
         "learning_rate_decay": 1,
         "activation": 'tanh',
-        "L1_reg": 0.000095882328054111 ,
-        "L2_reg": 0.000937799605135647,
+        "L1_reg": 0.000902623049560131 ,
+        "L2_reg": 0.000220426087608244,
         "optimizer": 'adam',#adam
         "dropout_keep_prob":0.9,
         "seed": 1
@@ -89,8 +89,8 @@ def initTrain():
     )
 
     #训练集
-    pred_hr1 = trainModel.predict(survTrain.loc[0:623, X_cols], output_margin=False)
-    survf1 = pd.DataFrame(trainModel.BSF.iloc[:, 0].values ** pred_hr1, columns = trainModel.BSF.index.values)
+    # pred_hr1 = trainModel.predict(survTrain.loc[0:623, X_cols], output_margin=False)
+    # survf1 = pd.DataFrame(trainModel.BSF.iloc[:, 0].values ** pred_hr1, columns = trainModel.BSF.index.values)
     # survf1.to_csv("C:\\Users\\Administrator\\Desktop\\survf1.csv")
 
 def getSurvTrain():

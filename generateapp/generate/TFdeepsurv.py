@@ -9,13 +9,13 @@ from django.conf import settings
 def generate(param): 
     new_col = ['Smoking Status', 'Age', 'SBP', 'TC', 'Hb', 'HDL', '24-hour urinary protein', 'Time', 'Event']
     params = pd.DataFrame(columns = new_col, data=param)
-    params["Smoking Status"]=(params["Smoking Status"]-0.339325842696629)/0.701535833637939
-    params["Age"]=(params["Age"]-52.0674157303371)/12.0261224418172
-    params["SBP"]=(params["SBP"]-137.644943820225)/17.7050513674092
-    params["TC"]=(params["TC"]-4.72598876404494)/1.53597181816442
-    params["Hb"]=(params["Hb"]-113.039101123595)/24.1637793642026
-    params["HDL"]=(params["HDL"]-1.15208988764045)/0.405865754940884
-    params["24-hour urinary protein"]=(params["24-hour urinary protein"]-4.26793258426966)/4.34121954893472
+    params["Smoking Status"]=(params["Smoking Status"]-0.339325843)/0.701535834
+    params["Age"]=(params["Age"]-52.06741573)/12.02612244
+    params["SBP"]=(params["SBP"]-137.6786517)/17.6498914
+    params["TC"]=(params["TC"]-4.735662921)/1.558955283
+    params["Hb"]=(params["Hb"]-113.0842697)/24.17123447
+    params["HDL"]=(params["HDL"]-1.146449438)/0.407353913
+    params["24-hour urinary protein"]=(params["24-hour urinary protein"]-3.937786517)/4.124942204
     # print(params)
     #Dataset statistics
     # from generateapp.tfdeepsurv.datasets import survival_stats
