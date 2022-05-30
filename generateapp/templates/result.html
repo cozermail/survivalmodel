@@ -352,7 +352,7 @@
         let ydata = Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]})
         // let threshold = (1-0.381376380968863) * 100
         // let threshold = 0.3389 * 100
-        let threshold = 0.8745
+        let threshold = 0.8754
         async function setPlot() {
             await Plotly.newPlot('charts', [{
                 x: xdata,
@@ -398,8 +398,8 @@
 
         function checkRisk(value) {
             // $('#risk').html(dataArr[value] > 0.381376380968863 ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
-            $('#risk1').html(highRisk < threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
-            $('#risk2').html(highRisk < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
+            $('#risk1').html(highRisk <= threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
+            $('#risk2').html(highRisk <= threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
         }
 
         $('.recal-culate').click(function() {
