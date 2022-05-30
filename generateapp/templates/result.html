@@ -345,12 +345,14 @@
             }
         }
 
+        let highRisk = JSON.parse('{{highRisk}}')[0][0]
         let data = '{{data}}'.replaceAll("&quot;", "\"")
         let dataArr = JSON.parse(data)
         let xdata = Object.keys(dataArr)
         let ydata = Object.getOwnPropertyNames(dataArr).map(function(i) {return dataArr[i]})
         // let threshold = (1-0.381376380968863) * 100
-        let threshold = 0.3389 * 100
+        // let threshold = 0.3389 * 100
+        let threshold = 0.8745
         async function setPlot() {
             await Plotly.newPlot('charts', [{
                 x: xdata,
@@ -388,10 +390,17 @@
         //     checkRisk(this.value)
         // })
 
+        // function checkRisk(value) {
+        //     // $('#risk').html(dataArr[value] > 0.381376380968863 ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
+        //     $('#risk1').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
+        //     $('#risk2').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
+        // }
+
         function checkRisk(value) {
             // $('#risk').html(dataArr[value] > 0.381376380968863 ? '<span style="color: #40bcf7">low-risk</span>' : '<span style="color: #db5724">high-risk</span>')
-            $('#risk1').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
-            $('#risk2').html(dataArr[value] < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
+            $('#risk1').html(highRisk < threshold ? '<span class="risk-span" style="color: #40bcf7">low-risk</span>' : '<span class="risk-span" style="color: #b96d50">high-risk</span>')
+            $('#risk2').html(highRisk < threshold ? '<span class="risk-span" style="color: #40bcf7">低风险</span>' : '<span class="risk-span" style="color: #b96d50">高风险</span>')
+            debugger;
         }
 
         $('.recal-culate').click(function() {

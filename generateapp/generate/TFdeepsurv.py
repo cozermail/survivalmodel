@@ -73,10 +73,12 @@ def generate(param):
     # data.iloc[0,len(data.columns)-18]
     # HR = "低风险" if data.iloc[0,len(data.columns)-18] > settings.THRESHOLD_5HR else "高风险"
     # HR = "低风险" if data.iloc[0,len(data.columns)-18] < ((1 - settings.THRESHOLD_5HR) * 100) else "高风险"
-
+    y_scores=settings.TRAIN_MODEL.predict(surv_test[X_cols])
+    print(y_scores)
     return {
         # "HR": HR,
-        "data": data.iloc[0,1:].to_json()
+        "data": data.iloc[0,1:].to_json(),
+        "highRisk": y_scores
     }
 
 
